@@ -389,19 +389,31 @@ blockquote {
 
 .VPSidebarItem.level-0>.item>.VPLink {
   pointer-events: none;
-  cursor: default;
-}
-
-.VPSidebarItem.level-0>.item>.VPLink .text {
-  color: var(--vp-c-text-1) !important;
-  font-weight: 600;
 }
 
 .VPSidebarItem.level-0>.item {
-  pointer-events: auto !important;
+  position: relative;
 }
 
-.VPSidebarItem.level-0 .caret {
-  pointer-events: auto !important;
+.VPSidebarItem.level-0>.item .caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.VPSidebarItem.level-0>.item .caret .caret-icon {
+  opacity: 1 !important;
+}
+
+.VPSidebarItem.level-0>.item:hover {
   cursor: pointer;
+  background-color: var(--vp-c-bg-soft);
 }
