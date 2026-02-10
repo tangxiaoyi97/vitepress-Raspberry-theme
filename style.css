@@ -423,9 +423,9 @@ blockquote {
   padding: 4px 8px;
   margin: -4px -8px;
   z-index: 1;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease, color .3s ease .1s;
 
-  background: linear-gradient(135deg, #d21f5b 15%, #ff4081 45%, #9c27b0 75%);
+  background: linear-gradient(135deg, #d21f5b 7%, #ff4081 50%, #9c27b0 93%);
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
@@ -438,16 +438,15 @@ blockquote {
   left: 0;
   width: 0;
   height: 100%;
-  background: linear-gradient(135deg, #d21f5b 15%, #ff4081 45%, #9c27b0 75%);
+  background: linear-gradient(135deg, #d21f5b 7%, #ff4081 50%, #9c27b0 93%);
   z-index: -1;
   transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 4px;
 }
 
 .VPNavBarTitle a.title:hover span {
-  transform: scale(1.05);
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  color: var(--vp-c-bg) !important;
+  -webkit-text-fill-color: var(--vp-c-bg) !important;
   background: none !important;
   -webkit-background-clip: initial !important;
   background-clip: initial !important;
