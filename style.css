@@ -412,3 +412,26 @@ blockquote {
 .VPSidebarItem.level-0.collapsible>.item>.VPLink {
   pointer-events: none;
 }
+
+
+.VPNavBarTitle .text {
+  font-size: 1.8rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.5px;
+  background: linear-gradient(120deg,
+      #d21f5b 10%,
+      #ff4081 40%,
+      #9c27b0 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+
+  line-height: 1.2;
+  margin-left: 4px;
+}
+
+@media (max-width: 768px) {
+  .VPNavBarTitle .text {
+    font-size: 1.4rem !important;
+  }
+}
