@@ -386,3 +386,18 @@ blockquote {
     margin-bottom: 1.5rem;
   }
 }
+
+.VPSidebarItem.level-0>.item {
+  pointer-events: none;
+  cursor: default;
+}
+
+.VPSidebarItem.level-0>.item .text {
+  color: var(--vp-c-text-1) !important;
+  font-weight: 600;
+}
+
+.VPSidebarItem.level-1.has-items>.item {
+  pointer-events: none;
+  cursor: default;
+}
