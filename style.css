@@ -387,21 +387,32 @@ blockquote {
   }
 }
 
-.VPSidebarItem.level-0.collapsible>.item>.VPLink {
-  pointer-events: none;
-}
-
 .VPSidebarItem.level-0.collapsible>.item {
+  position: relative;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
+.VPSidebarItem.level-0.collapsible>.item .caret::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  cursor: pointer;
+}
+
 .VPSidebarItem.level-0.collapsible>.item:hover {
   background-color: var(--vp-c-bg-soft);
-  border-radius: var(--vp-radius-base);
 }
 
 .VPSidebarItem.level-0.collapsible>.item>.VPLink .text {
   color: var(--vp-c-text-1) !important;
   font-weight: 700 !important;
+}
+
+.VPSidebarItem.level-0.collapsible>.item>.VPLink {
+  pointer-events: none;
 }
