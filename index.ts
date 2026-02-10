@@ -12,7 +12,7 @@ export default {
         const { frontmatter } = useData()
         
         if (frontmatter.value.title) {
-          return h('div', { class: 'newspaper-headline' }, frontmatter.value.title)
+          return h('div', { class: 'bf_headline' }, frontmatter.value.title)
         }
       }
     })

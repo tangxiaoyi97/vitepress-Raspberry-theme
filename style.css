@@ -339,24 +339,27 @@ blockquote {
   padding: 0 0.2em;
 }
 
-.newspaper-headline {
+.bf_headline {
   font-family: var(--vp-font-family-base);
   font-size: 3em;
   font-weight: 800;
-
   text-align: left;
   line-height: 1.1;
-
   margin-top: 1.5rem;
   margin-bottom: 2rem;
-
-  color: var(--vp-c-text-1);
-
   letter-spacing: -0.02em;
+
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  background-image: linear-gradient(125deg, #d21f5b 15%, #ff4081 60%, #9c27b0 100%);
+
+  background-size: 100%;
 }
 
 @media (max-width: 768px) {
-  .newspaper-headline {
+  .bf_headline {
     font-size: 2.25em;
     margin-bottom: 1.5rem;
   }
