@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.ts",
-  "description": "My Custom VitePress Theme",
+  "description": "vitepress raspberry theme",
   "peerDependencies": {
     "vitepress": "^1.0.0",
     "vue": "^3.0.0"
