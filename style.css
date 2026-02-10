@@ -414,24 +414,30 @@ blockquote {
 }
 
 
-.VPNavBarTitle .text {
-  font-size: 1.8rem !important;
+.VPNavBarTitle a.title span {
+  font-size: 1.85rem !important;
   font-weight: 900 !important;
-  letter-spacing: -0.5px;
-  background: linear-gradient(120deg,
-      #d21f5b 10%,
-      #ff4081 40%,
-      #9c27b0 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg,
+      #d21f5b 15%,
+      #ff4081 45%,
+      #9c27b0 75%);
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
   color: transparent !important;
 
-  line-height: 1.2;
-  margin-left: 4px;
+  display: inline-block;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.VPNavBarTitle a.title:hover span {
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
-  .VPNavBarTitle .text {
-    font-size: 1.4rem !important;
+  .VPNavBarTitle a.title span {
+    font-size: 1.45rem !important;
   }
 }
