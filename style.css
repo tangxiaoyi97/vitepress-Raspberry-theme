@@ -404,10 +404,6 @@ blockquote {
   cursor: pointer;
 }
 
-.VPSidebarItem.level-0.collapsible>.item:hover {
-  background-color: var(--vp-c-bg-soft);
-}
-
 .VPSidebarItem.level-0.collapsible>.item>.VPLink .text {
   color: var(--vp-c-text-1) !important;
   font-weight: 700 !important;
