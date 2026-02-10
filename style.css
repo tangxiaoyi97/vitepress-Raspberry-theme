@@ -69,8 +69,13 @@ body {
 }
 
 ::selection {
-  background-color: var(--vp-c-selection);
-  color: inherit;
+  background-color: var(--vp-c-brand-1);
+  color: var(--vp-c-bg);
+}
+
+::-moz-selection {
+  background-color: var(--vp-c-brand-1);
+  color: var(--vp-c-bg);
 }
 
 ::-webkit-scrollbar {
@@ -100,6 +105,15 @@ body {
 
 .VPButton:active {
   transform: translateY(1px);
+}
+
+.VPSidebar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.VPSidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .VPSidebarItem .items {
@@ -138,6 +152,14 @@ body {
 
 .VPSidebarItem .items:hover {
   border-left-color: var(--vp-c-brand-2);
+}
+
+.VPSidebarItem .text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  padding-right: 1em;
 }
 
 .vp-doc {
