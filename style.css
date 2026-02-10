@@ -387,17 +387,21 @@ blockquote {
   }
 }
 
-.VPSidebarItem.level-0>.item {
+.VPSidebarItem.level-0>.item>.VPLink {
   pointer-events: none;
   cursor: default;
 }
 
-.VPSidebarItem.level-0>.item .text {
+.VPSidebarItem.level-0>.item>.VPLink .text {
   color: var(--vp-c-text-1) !important;
   font-weight: 600;
 }
 
-.VPSidebarItem.level-1.has-items>.item {
-  pointer-events: none;
-  cursor: default;
+.VPSidebarItem.level-0>.item {
+  pointer-events: auto !important;
+}
+
+.VPSidebarItem.level-0 .caret {
+  pointer-events: auto !important;
+  cursor: pointer;
 }
