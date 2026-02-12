@@ -462,126 +462,159 @@ blockquote {
   }
 }
 
+/* ========================================================================
+   列表样式增强 (Timeline Guide Style)
+   功能：左侧引导线、自定义序号/圆点、折叠交互
+   ======================================================================== */
+
+/* 1. 重置默认列表样式 */
 .vp-doc ul,
 .vp-doc ol {
-  padding-left: 1.2rem;
-  position: relative;
   list-style: none !important;
   margin: 1rem 0;
+  padding-left: 1.5rem;
+  /* 为引导线留出空间 */
+  position: relative;
 }
 
+/* 2. 左侧视觉引导线 (贯穿整段列表) */
 .vp-doc ul::before,
 .vp-doc ol::before {
   content: "";
   position: absolute;
-  left: 0;
+  left: 0.5rem;
+  /* 线条位置 */
   top: 0.5rem;
   bottom: 0.5rem;
   width: 2px;
   background-color: var(--vp-c-divider);
-  opacity: 0.6;
+  /* 使用主题分割线颜色，自动适配黑/白模式 */
   border-radius: 2px;
-  transition: background-color 0.3s ease;
+  opacity: 0.6;
 }
 
-.vp-doc ul:hover::before,
-.vp-doc ol:hover::before {
-  background-color: var(--vp-c-tree-guide);
-}
-
+/* 3. 列表项基础样式 */
 .vp-doc li {
   position: relative;
-  margin: 0.6rem 0;
-  padding-left: 1.2rem;
+  padding-left: 1.5rem;
+  /* 文字离序号的距离 */
+  margin: 0.5rem 0;
   line-height: 1.7;
-  color: var(--vp-c-text-2);
+}
+
+/* 突出列表项的第一行文字（增强视觉层级） */
+.vp-doc li>p:first-child,
+.vp-doc li {
+  color: var(--vp-c-text-1);
+  /* 使用主要文字颜色 */
   transition: color 0.2s;
 }
 
-.vp-doc li:hover {
-  color: var(--vp-c-text-1);
-}
-
-.vp-doc li>p {
-  margin: 0;
-  display: inline-block;
-}
-
-.vp-doc ul>li::after {
-  content: "";
-  position: absolute;
-  top: 0.65rem;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--vp-c-brand-2);
-  transform: translateY(-50%);
-  transition: transform 0.2s, background-color 0.2s;
-}
-
+/* === 有序列表 (OL) 序号样式 === */
 .vp-doc ol {
   counter-reset: list-counter;
+  /* 初始化计数器 */
 }
 
 .vp-doc ol>li {
-  padding-left: 1.5rem;
-}
-
-.vp-doc ol>li::before {
-  content: counter(list-counter) ".";
   counter-increment: list-counter;
+  /* 计数器自增 */
+}
+
+/* 序号数字 */
+.vp-doc ol>li::before {
+  content: counter(list-counter);
   position: absolute;
-  left: -0.2rem;
-  top: 0;
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.85em;
-  font-weight: 600;
-  color: var(--vp-c-brand-2);
-}
+  left: -1rem;
+  /* 调整圆圈位置，使其中心对齐引导线 */
+  top: 0.1em;
+  width: 1.6rem;
+  height: 1.6rem;
 
-.vp-doc ol>li::after {
-  display: none;
-}
+  /* 视觉样式 */
+  background-color: var(--vp-c-bg);
+  /* 背景色与页面一致，遮挡背后的线 */
+  border: 2px solid var(--vp-c-divider);
+  color: var(--vp-c-text-2);
+  border-radius: 50%;
 
-.vp-doc li.has-nested-list {
-  cursor: pointer;
-}
-
-.list-toggler {
-  position: absolute;
-  left: -18px;
-  top: 3px;
-  width: 16px;
-  height: 16px;
+  /* 文字居中 */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--vp-c-text-3);
-  cursor: pointer;
-  transition: transform 0.2s, color 0.2s;
-  z-index: 10;
+  font-size: 0.85em;
+  font-weight: 600;
+  font-family: var(--vp-font-family-base);
+  z-index: 2;
+  /* 确保浮在引导线上方 */
+  transition: all 0.2s ease;
 }
 
-.list-toggler:hover {
+/* === 无序列表 (UL) 圆点样式 === */
+.vp-doc ul>li::before {
+  content: "";
+  position: absolute;
+  left: -0.65rem;
+  /* 微调对齐引导线 */
+  top: 0.6em;
+  width: 0.7rem;
+  height: 0.7rem;
+
+  background-color: var(--vp-c-bg);
+  border: 2px solid var(--vp-c-brand-1);
+  /* 使用品牌色作为圆点 */
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+/* === 悬停效果 === */
+.vp-doc li:hover::before {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  transform: scale(1.1);
+  /* 微微放大 */
+  box-shadow: 0 0 8px var(--vp-c-brand-soft);
+}
+
+/* === 折叠功能样式 (配合 JS) === */
+
+/* 含有子列表的项：鼠标变成手型 */
+.vp-doc li.has-children {
+  cursor: pointer;
+}
+
+/* 折叠指示器 (小三角) */
+.vp-doc li.has-children::after {
+  content: "▼";
+  position: absolute;
+  right: 1rem;
+  /* 放在右侧，或者你可以放在左侧序号旁边 */
+  top: 0.2rem;
+  font-size: 0.7em;
+  color: var(--vp-c-text-3);
+  transition: transform 0.3s ease;
+  opacity: 0.5;
+}
+
+.vp-doc li.has-children:hover::after {
+  opacity: 1;
   color: var(--vp-c-brand-1);
 }
 
-.list-toggler::before {
-  content: "▼";
-  font-size: 0.6em;
-}
-
-.vp-doc li.collapsed>.list-toggler {
-  transform: rotate(-90deg);
-}
-
+/* 折叠状态：隐藏子列表 */
 .vp-doc li.collapsed>ul,
 .vp-doc li.collapsed>ol {
   display: none;
 }
 
-.vp-doc ul>li.has-nested-list::after {
-  background-color: var(--vp-c-text-3);
-  opacity: 0.5;
+/* 折叠状态：旋转小三角 */
+.vp-doc li.collapsed::after {
+  transform: rotate(-90deg);
+}
+
+/* 折叠状态：改变序号颜色提示用户 */
+.vp-doc li.collapsed::before {
+  background-color: var(--vp-c-brand-soft);
+  border-color: var(--vp-c-brand-1);
 }
