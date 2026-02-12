@@ -461,3 +461,127 @@ blockquote {
     font-size: 1.45rem !important;
   }
 }
+
+.vp-doc ul,
+.vp-doc ol {
+  padding-left: 1.2rem;
+  position: relative;
+  list-style: none !important;
+  margin: 1rem 0;
+}
+
+.vp-doc ul::before,
+.vp-doc ol::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background-color: var(--vp-c-divider);
+  opacity: 0.6;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+
+.vp-doc ul:hover::before,
+.vp-doc ol:hover::before {
+  background-color: var(--vp-c-tree-guide);
+}
+
+.vp-doc li {
+  position: relative;
+  margin: 0.6rem 0;
+  padding-left: 1.2rem;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+  transition: color 0.2s;
+}
+
+.vp-doc li:hover {
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc li>p {
+  margin: 0;
+  display: inline-block;
+}
+
+.vp-doc ul>li::after {
+  content: "";
+  position: absolute;
+  top: 0.65rem;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--vp-c-brand-2);
+  transform: translateY(-50%);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.vp-doc ol {
+  counter-reset: list-counter;
+}
+
+.vp-doc ol>li {
+  padding-left: 1.5rem;
+}
+
+.vp-doc ol>li::before {
+  content: counter(list-counter) ".";
+  counter-increment: list-counter;
+  position: absolute;
+  left: -0.2rem;
+  top: 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--vp-c-brand-2);
+}
+
+.vp-doc ol>li::after {
+  display: none;
+}
+
+.vp-doc li.has-nested-list {
+  cursor: pointer;
+}
+
+.list-toggler {
+  position: absolute;
+  left: -18px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vp-c-text-3);
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.list-toggler:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.list-toggler::before {
+  content: "▼";
+  font-size: 0.6em;
+}
+
+.vp-doc li.collapsed>.list-toggler {
+  transform: rotate(-90deg);
+}
+
+.vp-doc li.collapsed>ul,
+.vp-doc li.collapsed>ol {
+  display: none;
+}
+
+.vp-doc ul>li.has-nested-list::after {
+  background-color: var(--vp-c-text-3);
+  opacity: 0.5;
+}
