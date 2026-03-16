@@ -1,7 +1,8 @@
 :root {
   --vp-c-brand-1: #d21f5b;
-  --vp-c-brand-2: #e91e63;
+  --vp-c-brand-2: #ff4081;
   --vp-c-brand-3: #e91e63;
+  --vp-c-brand-purple: #9c27b0;
   --vp-c-brand-soft: #f8e7ed;
 
   --vp-c-selection: rgba(210, 31, 91, 0.2);
@@ -18,7 +19,7 @@
   --vp-c-scrollbar-hover: #b0b0b3;
 
   --vp-c-text-1: #2f2f2f;
-  --vp-c-text-2: #5c5c5c;
+  --vp-c-text-2: #666666;
   --vp-c-text-3: #999999;
 
   --vp-c-marker: #ff91bf77;
@@ -28,16 +29,16 @@
   --vp-spacing-block: 1.6rem;
 
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #d21f5b 0%, #ff4081 100%);
+  --vp-home-hero-name-background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, var(--vp-c-brand-2) 100%);
 
   --vp-font-family-base: "Inter", system-ui, -apple-system, sans-serif;
   --vp-font-family-serif: "Georgia", "Times New Roman", serif;
 }
 
 .dark {
-  --vp-c-bg: #1a1a1b;
-  --vp-c-bg-alt: #1a1a1b;
-  --vp-c-bg-soft: #2a2a2d;
+  --vp-c-bg: #1c191a;
+  --vp-c-bg-alt: #1c191a;
+  --vp-c-bg-soft: #2c282a;
 
   --vp-c-border: #333333;
   --vp-c-divider: #333333;
@@ -52,10 +53,13 @@
 
   --vp-c-brand-1: #ff4081;
   --vp-c-brand-2: #d21f5b;
+  --vp-c-brand-3: #e91e63;
   --vp-c-brand-soft: rgba(210, 31, 91, 0.15);
 
   --vp-c-marker: rgba(255, 64, 129, 0.3);
   --vp-c-marker-hover: rgba(255, 64, 129, 0.5);
+
+  --vp-c-selection: rgba(255, 64, 129, 0.25);
 }
 
 html {
@@ -69,13 +73,11 @@ body {
 }
 
 ::selection {
-  background-color: var(--vp-c-brand-1);
-  color: var(--vp-c-bg);
+  background-color: var(--vp-c-selection);
 }
 
 ::-moz-selection {
-  background-color: var(--vp-c-brand-1);
-  color: var(--vp-c-bg);
+  background-color: var(--vp-c-selection);
 }
 
 ::-webkit-scrollbar {
@@ -143,7 +145,6 @@ body {
   top: 50%;
   transform: translateY(-50%);
   border-radius: 2px;
-
 }
 
 .VPSidebarItem.is-active>.item .text {
@@ -239,40 +240,27 @@ body {
   line-height: 1;
 }
 
+/* =====================================================================
+   优化后的 Hyperlink (超链接) 样式 - 轻盈展开的渐变下划线
+   ===================================================================== */
 .vp-doc a:not(.header-anchor) {
   color: var(--vp-c-brand-1);
   text-decoration: none;
   font-weight: 500;
-  position: relative;
-  z-index: 1;
-  border-bottom: 1.5px dashed var(--vp-c-brand-1);
-  padding: 2px 4px;
-  margin: 0 -2px;
-  transition: color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s;
-}
-
-.vp-doc a:not(.header-anchor)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  background-color: var(--vp-c-brand-1);
-  z-index: -1;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* 绘制底部渐变线 */
+  background: linear-gradient(120deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.3s ease;
+  padding-bottom: 1px;
+  /* 给下划线留出空间 */
 }
 
 .vp-doc a:not(.header-anchor):hover {
-  color: #ffffff;
-  border-bottom-color: transparent;
-}
-
-.vp-doc a:not(.header-anchor):hover::after {
-  transform: scaleX(1);
+  background-size: 100% 2px;
+  /* 悬浮时下划线向右展开 */
+  color: var(--vp-c-brand-2);
 }
 
 mark {
@@ -287,27 +275,76 @@ mark {
 }
 
 mark:hover {
-  box-shadow: inset 0 -1.5em 0 0 var(--vp-c-marker);
+  box-shadow: inset 0 -1.5em 0 0 var(--vp-c-marker-hover);
 }
 
+/* =====================================================================
+   优化后的现代 Table 样式 (无竖向网格线的精致卡片风)
+   ===================================================================== */
 .vp-doc table {
   display: block;
   overflow-x: auto;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
+  margin: 2.5rem 0;
   border-collapse: collapse;
-  margin: 2rem 0;
+  border-radius: 8px;
+  /* 绝妙技巧：用 box-shadow 绘制完美贴合圆角的外边框，去除原生僵硬边框 */
+  box-shadow: 0 0 0 1px var(--vp-c-border), 0 4px 16px rgba(0, 0, 0, 0.03);
+  background-color: var(--vp-c-bg);
+}
+
+.vp-doc tr {
+  border-bottom: 1px solid var(--vp-c-border);
+  transition: background-color 0.2s ease;
+}
+
+.vp-doc tr:last-child {
+  border-bottom: none;
+}
+
+/* 极其微弱的斑马纹，防止干扰数据阅读 */
+.vp-doc tr:nth-child(even) {
+  background-color: rgba(128, 128, 128, 0.015);
+}
+
+/* 悬浮行高亮 - 使用你的树莓柔和色 */
+.vp-doc tr:hover {
+  background-color: var(--vp-c-brand-soft);
 }
 
 .vp-doc th,
 .vp-doc td {
-  border: 1px solid var(--vp-c-border);
-  padding: 0.6em 1em;
+  border: none;
+  /* 彻底去除垂直和单元格级别的多余网格线 */
+  padding: 14px 20px;
+  color: var(--vp-c-text-1);
 }
 
 .vp-doc th {
   background-color: var(--vp-c-bg-soft);
   font-weight: 600;
+  text-align: left;
 }
+
+/* 确保表格的四个角能完美展现 border-radius 圆角 */
+.vp-doc tr:first-child th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.vp-doc tr:first-child th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.vp-doc tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.vp-doc tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+/* ===================================================================== */
 
 .vp-doc div[class*="language-"] {
   border-radius: var(--vp-radius-base);
@@ -341,14 +378,15 @@ mark:hover {
 
 blockquote {
   border-left: 3px solid var(--vp-c-brand-1);
-  background: var(--vp-c-bg-alt);
+  background: var(--vp-c-bg-soft);
   padding: 1rem 1.2rem;
   color: var(--vp-c-text-2);
   margin: 1.5rem 0;
+  border-radius: 0 var(--vp-radius-base) var(--vp-radius-base) 0;
 }
 
 .katex-display {
-  background: var(--vp-c-bg-alt);
+  background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-border);
   border-radius: var(--vp-radius-base);
   padding: 1.5rem;
@@ -375,8 +413,8 @@ blockquote {
   background-clip: text;
   -webkit-background-clip: text;
 
-  background-image: linear-gradient(125deg, #d21f5b 15%, #ff4081 60%, #9c27b0 100%);
-
+  /* 使用统一的变量色进行渐变，收尾换成专用的紫色变量 */
+  background-image: linear-gradient(125deg, var(--vp-c-brand-1) 15%, var(--vp-c-brand-2) 60%, var(--vp-c-brand-purple) 100%);
   background-size: 100%;
 }
 
@@ -425,7 +463,7 @@ blockquote {
   z-index: 1;
   transition: transform 0.3s ease, color 0.3s ease, color .3s ease .1s;
 
-  background: linear-gradient(135deg, #d21f5b 7%, #ff4081 50%, #9c27b0 93%);
+  background: linear-gradient(135deg, var(--vp-c-brand-1) 7%, var(--vp-c-brand-2) 50%, var(--vp-c-brand-purple) 93%);
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
@@ -438,7 +476,7 @@ blockquote {
   left: 0;
   width: 0;
   height: 100%;
-  background: linear-gradient(135deg, #d21f5b 7%, #ff4081 50%, #9c27b0 93%);
+  background: linear-gradient(135deg, var(--vp-c-brand-1) 7%, var(--vp-c-brand-2) 50%, var(--vp-c-brand-purple) 93%);
   z-index: -1;
   transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   border-radius: 4px;
@@ -473,4 +511,123 @@ blockquote {
 
 .vp-doc img:hover {
   transform: scale(102%);
+}
+
+/* =====================================================================
+   viteinsight: spoiler 样式 (深度优化版)
+   ===================================================================== */
+
+/* 1. 块级整体模糊面板 (带有 box 属性) */
+.vite-insight-spoiler-box {
+  position: relative;
+  margin: 16px 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--vp-c-bg-soft);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transform: translateZ(0);
+}
+
+.vite-insight-spoiler-box:not(.is-revealed) {
+  cursor: pointer;
+}
+
+.vite-insight-spoiler-box:not(.is-revealed):hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* 内容区域：未展开时深度模糊 + 轻微灰度，高级感拉满 */
+.vite-insight-spoiler-box:not(.is-revealed) .spoiler-box-content {
+  filter: blur(10px) opacity(0.4) grayscale(0.2);
+  pointer-events: none;
+  user-select: none;
+}
+
+.spoiler-box-content {
+  padding: 24px;
+  transition: filter 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+  color: var(--vp-c-text-1);
+  line-height: 1.7;
+}
+
+/* 悬浮 Overlay 层 */
+.spoiler-box-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background: rgba(128, 128, 128, 0.04);
+}
+
+/* 标题胶囊按钮 */
+.spoiler-box-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(6px);
+}
+
+/* eye */
+.spoiler-box-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--vp-c-brand-1);
+}
+
+/* animation */
+.spoiler-fade-enter-active,
+.spoiler-fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.spoiler-fade-enter-from,
+.spoiler-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+/* default inline */
+.vite-insight-spoiler-inline {
+  background-color: var(--vp-c-bg-alt);
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin: 0 2px;
+  cursor: pointer;
+  filter: blur(4px);
+  opacity: 0.65;
+  transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+  user-select: none;
+  display: inline-block;
+}
+
+/* desktop */
+@media (hover: hover) and (pointer: fine) {
+  .vite-insight-spoiler-inline:hover {
+    filter: blur(0);
+    opacity: 1;
+    user-select: auto;
+    background-color: var(--vp-c-bg-soft);
+  }
+}
+
+/* mobile */
+.vite-insight-spoiler-inline.is-revealed {
+  filter: blur(0);
+  opacity: 1;
+  user-select: auto;
+  cursor: text;
+  background-color: var(--vp-c-bg-soft);
 }
