@@ -538,9 +538,8 @@ blockquote {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* 内容区域：未展开时深度模糊 + 轻微灰度，高级感拉满 */
 .vite-insight-spoiler-box:not(.is-revealed) .spoiler-box-content {
-  filter: blur(10px) opacity(0.4) grayscale(0.2);
+  filter: blur(2px) opacity(0.4) grayscale(0.2);
   pointer-events: none;
   user-select: none;
 }
@@ -563,21 +562,29 @@ blockquote {
   background: rgba(128, 128, 128, 0.04);
 }
 
-/* 标题胶囊按钮 */
+/* 标题卡片按钮 (摒弃臃肿胶囊，改为精致轻盈卡片) */
 .spoiler-box-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background-color: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  padding: 10px 24px;
-  border-radius: 24px;
+  border: 1px solid var(--vp-c-border);
+  padding: 8px 20px;
+  border-radius: 8px;
   font-weight: 600;
   color: var(--vp-c-text-1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  font-size: 14px;
   letter-spacing: 0.5px;
-  backdrop-filter: blur(6px);
+  transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 悬浮整个 Box 时，标题也会有所响应 */
+.vite-insight-spoiler-box:not(.is-revealed):hover .spoiler-box-title {
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* eye */
@@ -606,7 +613,7 @@ blockquote {
   padding: 2px 8px;
   margin: 0 2px;
   cursor: pointer;
-  filter: blur(4px);
+  filter: blur(2px);
   opacity: 0.65;
   transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
   user-select: none;
