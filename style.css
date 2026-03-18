@@ -241,7 +241,7 @@ body {
 }
 
 /* =====================================================================
-   优化后的 Hyperlink (超链接) 样式 - 轻盈展开的渐变下划线
+   hyperlink
    ===================================================================== */
 .vp-doc a:not(.header-anchor) {
   color: var(--vp-c-brand-1);
@@ -279,7 +279,7 @@ mark:hover {
 }
 
 /* =====================================================================
-   优化后的现代 Table 样式 (无竖向网格线的精致卡片风)
+    Table
    ===================================================================== */
 .vp-doc table {
   display: block;
@@ -289,7 +289,6 @@ mark:hover {
   margin: 2.5rem 0;
   border-collapse: collapse;
   border-radius: 8px;
-  /* 绝妙技巧：用 box-shadow 绘制完美贴合圆角的外边框，去除原生僵硬边框 */
   box-shadow: 0 0 0 1px var(--vp-c-border), 0 4px 16px rgba(0, 0, 0, 0.03);
   background-color: var(--vp-c-bg);
 }
@@ -413,7 +412,6 @@ blockquote {
   background-clip: text;
   -webkit-background-clip: text;
 
-  /* 使用统一的变量色进行渐变，收尾换成专用的紫色变量 */
   background-image: linear-gradient(125deg, var(--vp-c-brand-1) 15%, var(--vp-c-brand-2) 60%, var(--vp-c-brand-purple) 100%);
   background-size: 100%;
 }
@@ -513,128 +511,303 @@ blockquote {
   transform: scale(102%);
 }
 
-/* =====================================================================
-   viteinsight: spoiler 样式 (深度优化版)
-   ===================================================================== */
 
-/* 1. 块级整体模糊面板 (带有 box 属性) */
-.vite-insight-spoiler-box {
-  position: relative;
-  margin: 16px 0;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: var(--vp-c-bg-soft);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  transform: translateZ(0);
+.bf_headline {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-.vite-insight-spoiler-box:not(.is-revealed) {
+/* =====================================================================
+   VitePress Spoiler
+   ===================================================================== */
+
+.vp-spoiler-box,
+.vp-spoiler-inline {
+  --vp-spoiler-curve: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --vp-spoiler-accent: var(--vp-c-brand-1, #10b981);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+.vp-spoiler-box {
+  --vp-spoiler-glow-size: 240px;
+  --vp-spoiler-glow-opacity: 0.12;
+  --vp-spoiler-spotlight-size: 140px;
+  --vp-spoiler-blur-radius: 12px;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  position: relative;
+  margin: 24px 0;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid rgba(128, 128, 128, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.03), 0 8px 24px -8px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  transition: border-color 0.4s var(--vp-spoiler-curve), background-color 0.4s var(--vp-spoiler-curve), box-shadow 0.4s var(--vp-spoiler-curve);
+  transform: translateZ(0);
+  outline: none;
+}
+
+.vp-spoiler-box:focus-visible,
+.vp-spoiler-inline:focus-visible {
+  outline: 2px solid var(--vp-spoiler-accent);
+  outline-offset: 2px;
+}
+
+.vp-spoiler-box:not(.is-revealed) {
   cursor: pointer;
 }
 
-.vite-insight-spoiler-box:not(.is-revealed):hover {
-  border-color: var(--vp-c-brand-1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+.vp-spoiler-box:not(.is-scribble):not(.is-revealed) {
+  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg-alt));
 }
 
-.vite-insight-spoiler-box:not(.is-revealed) .spoiler-box-content {
-  filter: blur(2px) opacity(0.4) grayscale(0.2);
+.vp-spoiler-box:not(.is-revealed):hover {
+  border-color: var(--vp-spoiler-accent);
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.04), 0 12px 32px -8px rgba(0, 0, 0, 0.04);
+}
+
+.vp-spoiler-glow {
+  position: absolute;
+  left: var(--mouse-x);
+  top: var(--mouse-y);
+  width: var(--vp-spoiler-glow-size);
+  height: var(--vp-spoiler-glow-size);
+  background: radial-gradient(circle closest-side, var(--vp-spoiler-accent) 0%, transparent 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(45px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.vp-spoiler-box.is-scribble .vp-spoiler-glow {
+  display: none;
+}
+
+.vp-spoiler-box.is-hovered .vp-spoiler-glow {
+  opacity: var(--vp-spoiler-glow-opacity);
+}
+
+.vp-spoiler-content {
+  position: relative;
+  z-index: 2;
+  padding: 28px 32px;
+  color: var(--vp-c-text-1);
+  line-height: 1.8;
+  transition: filter 0.5s var(--vp-spoiler-curve), opacity 0.5s ease;
+  will-change: filter, opacity;
+}
+
+.vp-spoiler-box:not(.is-revealed) .vp-spoiler-content {
+  filter: blur(var(--vp-spoiler-blur-radius));
+  opacity: 0.05;
+  transform: scale(0.98);
   pointer-events: none;
   user-select: none;
 }
 
-.spoiler-box-content {
-  padding: 24px;
-  transition: filter 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
-  color: var(--vp-c-text-1);
-  line-height: 1.7;
+.vp-spoiler-box.is-scribble:not(.is-revealed) .vp-spoiler-content {
+  opacity: 0;
+  filter: blur(0px);
 }
 
-/* 悬浮 Overlay 层 */
-.spoiler-box-overlay {
+.vp-spoiler-title-wrapper {
   position: absolute;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
-  background: rgba(128, 128, 128, 0.04);
+  z-index: 20;
+  pointer-events: none;
 }
 
-/* 标题卡片按钮 (摒弃臃肿胶囊，改为精致轻盈卡片) */
-.spoiler-box-title {
-  display: inline-flex;
+.vp-spoiler-title-base,
+.vp-spoiler-title-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  background-color: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-border);
-  padding: 8px 20px;
-  border-radius: 8px;
   font-weight: 600;
-  color: var(--vp-c-text-1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: letter-spacing 0.4s var(--vp-spoiler-curve), opacity 0.3s ease;
 }
 
-/* 悬浮整个 Box 时，标题也会有所响应 */
-.vite-insight-spoiler-box:not(.is-revealed):hover .spoiler-box-title {
-  color: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-soft);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+.vp-spoiler-title-base {
+  color: var(--vp-c-text-3);
 }
 
-/* eye */
-.spoiler-box-icon {
-  width: 18px;
-  height: 18px;
-  color: var(--vp-c-brand-1);
+.vp-spoiler-box.is-scribble .vp-spoiler-title-base {
+  color: var(--vp-c-bg);
+  opacity: 0.8;
 }
 
-/* animation */
-.spoiler-fade-enter-active,
-.spoiler-fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.spoiler-fade-enter-from,
-.spoiler-fade-leave-to {
+.vp-spoiler-title-glow {
+  background: radial-gradient(circle var(--vp-spoiler-spotlight-size) at var(--mouse-x) var(--mouse-y), var(--vp-spoiler-accent) 0%, transparent 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   opacity: 0;
-  transform: scale(0.92);
 }
 
-/* default inline */
-.vite-insight-spoiler-inline {
-  background-color: var(--vp-c-bg-alt);
-  border-radius: 6px;
-  padding: 2px 8px;
-  margin: 0 2px;
-  cursor: pointer;
-  filter: blur(2px);
-  opacity: 0.65;
-  transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
-  user-select: none;
+.vp-spoiler-box.is-scribble .vp-spoiler-title-glow {
+  display: none;
+}
+
+.vp-spoiler-box:is(.is-hovered, :focus-visible):not(.is-revealed) .vp-spoiler-title-glow {
+  opacity: 1;
+}
+
+.vp-spoiler-box:is(.is-hovered, :focus-visible):not(.is-revealed) :is(.vp-spoiler-title-base, .vp-spoiler-title-glow) {
+  letter-spacing: 0.25em;
+}
+
+.vp-spoiler-box.is-scribble:is(.is-hovered, :focus-visible):not(.is-revealed) .vp-spoiler-title-base {
+  opacity: 1;
+}
+
+.vp-spoiler-fade-enter-active,
+.vp-spoiler-fade-leave-active {
+  transition: opacity 0.4s var(--vp-spoiler-curve);
+}
+
+.vp-spoiler-fade-enter-from,
+.vp-spoiler-fade-leave-to {
+  opacity: 0;
+}
+
+.vp-spoiler-inline {
+  position: relative;
   display: inline-block;
+  margin: 0 4px;
+  padding: 1px 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s var(--vp-spoiler-curve);
+  vertical-align: baseline;
+  line-height: 1.25;
+  outline: none;
 }
 
-/* desktop */
+.vp-spoiler-inline:not(.is-scribble) {
+  background: linear-gradient(145deg, var(--vp-c-bg-soft), var(--vp-c-bg-alt));
+  border-color: rgba(128, 128, 128, 0.12);
+}
+
+.vp-spoiler-inline-content {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  filter: blur(3.5px);
+  opacity: 0.55;
+  transition: filter 0.4s var(--vp-spoiler-curve), opacity 0.4s ease;
+  user-select: none;
+  will-change: filter, opacity;
+}
+
+.vp-spoiler-inline.is-revealed .vp-spoiler-inline-content {
+  filter: blur(0px);
+  opacity: 1;
+  user-select: auto;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .vite-insight-spoiler-inline:hover {
-    filter: blur(0);
+  .vp-spoiler-inline:not(.is-revealed):not(.is-scribble):hover {
+    border-color: var(--vp-spoiler-accent);
+  }
+
+  .vp-spoiler-inline:not(.is-revealed):not(.is-scribble):hover .vp-spoiler-inline-content {
+    filter: blur(0px);
     opacity: 1;
-    user-select: auto;
-    background-color: var(--vp-c-bg-soft);
   }
 }
 
-/* mobile */
-.vite-insight-spoiler-inline.is-revealed {
-  filter: blur(0);
+.vp-spoiler-inline.is-scribble {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.vp-spoiler-box.is-scribble:not(.is-revealed) {
+  background-color: var(--vp-c-text-1);
+  border: none;
+  opacity: 0.95;
+  transition: background-color 0.4s var(--vp-spoiler-curve), opacity 0.4s var(--vp-spoiler-curve);
+}
+
+.vp-spoiler-inline.is-scribble::after,
+.vp-spoiler-box.is-scribble:not(.is-revealed)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--vp-c-text-1);
+  background-image: repeating-linear-gradient(-45deg,
+      transparent,
+      transparent 6px,
+      rgba(128, 128, 128, 0.05) 6px,
+      rgba(128, 128, 128, 0.05) 12px);
+  background-size: 200% 200%;
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.15);
   opacity: 1;
-  user-select: auto;
-  cursor: text;
-  background-color: var(--vp-c-bg-soft);
+  transition: opacity 0.4s var(--vp-spoiler-curve), visibility 0.4s;
+  pointer-events: none;
+  z-index: 5;
+  visibility: visible;
+  will-change: background-position;
+  animation: scribble-move 2s linear infinite;
+  animation-play-state: paused;
+}
+
+.vp-spoiler-box.is-scribble:not(.is-revealed)::after {
+  z-index: 1;
+}
+
+.vp-spoiler-inline.is-scribble.is-revealed::after {
+  opacity: 0;
+  visibility: hidden;
+  animation-play-state: paused;
+}
+
+.vp-spoiler-inline.is-scribble:not(.is-revealed) .vp-spoiler-inline-content {
+  opacity: 0;
+  filter: blur(0px);
+}
+
+@keyframes scribble-move {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 30px 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vp-spoiler-inline.is-scribble:not(.is-revealed):hover::after {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .vp-spoiler-inline.is-scribble:not(.is-revealed):hover .vp-spoiler-inline-content {
+    opacity: 1;
+  }
+
+  .vp-spoiler-box.is-scribble:not(.is-revealed):hover {
+    opacity: 1;
+    background-color: var(--vp-c-text-2);
+  }
+
+  .vp-spoiler-box.is-scribble:not(.is-revealed):hover::after {
+    animation-play-state: running;
+    opacity: 0.9;
+  }
 }

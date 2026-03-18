@@ -2,6 +2,7 @@ import DefaultTheme from "vitepress/theme";
 import { h } from "vue";
 import { useData } from "vitepress";
 import "./style.css";
+import Spoiler from "./spoiler.vue"; 
 import type { Theme } from "vitepress";
 
 export default {
@@ -18,5 +19,7 @@ export default {
     });
   },
 
-  enhanceApp({ app }) {},
+  enhanceApp({ app }) {
+    app.component("spoiler", Spoiler);
+  },
 } satisfies Theme;
