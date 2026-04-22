@@ -156,9 +156,9 @@ body {
 }
 
 .VPSidebarItem .text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
   display: block;
   padding-right: 1em;
 }
